@@ -39,3 +39,10 @@ go get github.com/gorilla/mux
 > `go get go.mongodb.org/mongo-driver/mongo` - me auxliará na conexão com mongodb
 
 > `go get github.com/gorilla/mux` - me auxiliará nas rotas.
+
+# Rota "POST"
+Utilizar methodo "POST" na seguinte rota: localhost:8000/book, e em seguida utilizar o json.
+
+Fiz um pequeno exemplo utilizando o `Insomnia`:
+
+<img src="./ScreenShot/insomi1.PNG"/>
