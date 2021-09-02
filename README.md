@@ -23,11 +23,19 @@ Inicie o docker e utilize o comando no terminal:
 
 Criei um arquivo chamado: livraria.mongodb - para poder utilizar comandos para criar a Database(Livraria_Moneri) e uma Tabela com nome: "Livro".
 
-## Bibliotecas utilizadas instaladas:
+# Inicializando:
 
-Instaladas no terminal.
+Abrindo o terminal, utilizando o comando:
+```bash
+go mod init example.com/greetings
+```
 
+para começar a declarar as dependências, utilizando as seguintes bibliotecas:
 ```bash
 go get go.mongodb.org/mongo-driver/mongo
 go get github.com/gorilla/mux
 ```
+
+> `go get go.mongodb.org/mongo-driver/mongo` - me auxliará na conexão com mongodb
+
+> `go get github.com/gorilla/mux` - me auxiliará nas rotas.

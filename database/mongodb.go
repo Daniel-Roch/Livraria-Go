@@ -1,7 +1,6 @@
 package database
 
 //Conando mongoDB - go get go.mongodb.org/mongo-driver/mongo
-
 import (
 	"context"
 	"fmt"
@@ -11,15 +10,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-//Colocar aqui caso tenha senha.
-var (
-	host     = "localhost"
-	port     = 27016
-	database = "Livraria_Moneri"
-)
-
 func GetCollection(collection string) *mongo.Collection {
-	uri := fmt.Sprintf("mongodb://%s:%d", host, port)
+
+	uri := fmt.Sprintf("mongodb://localhost:27016")
+
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 
 	if err != nil {
@@ -33,6 +27,5 @@ func GetCollection(collection string) *mongo.Collection {
 		panic(err.Error())
 	}
 
-	return client.Database(database).Collection(collection)
-
+	return client.Database("Livraria_Moneri").Collection("Livro")
 }

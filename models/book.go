@@ -13,4 +13,4 @@ type Livro struct {
 }
 
 //Lista de Livros
-type Livros []Livro
+type Livros []*Livro
