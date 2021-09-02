@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -23,6 +24,16 @@ type Book struct {
 
 var client *mongo.Client
 
+func CreateBooksEndpoint(response http.ResponseWriter, request *http.Request) {
+	response.Header().Add("content-type", "application/json")
+	var book Book
+	json.NewDecoder(request.Body).Decode(&book)
+	collection := client.Database("Livraria_Moneri").Collection("Livro")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	result, _ := collection.InsertOne(ctx, book)
+	json.NewEncoder(response).Encode(result)
+}
+
 func main() {
 	fmt.Printf("Aplicação Rodando..")
 	//Decidi não pegar o erro no momento.
@@ -30,5 +41,6 @@ func main() {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27016")
 	client, _ = mongo.Connect(ctx, clientOptions)
 	router := mux.NewRouter()
+	router.HandleFunc("/book", CreateBooksEndpoint).Methods("POST")
 	http.ListenAndServe(":8000", router)
 }
