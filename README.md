@@ -40,9 +40,17 @@ go get github.com/gorilla/mux
 
 > `go get github.com/gorilla/mux` - me auxiliará nas rotas.
 
+# Rota "GET"
+Utilizando o método "GET" na segunte rota: localhost:8000/books (Detalhe no nome: "books" pois quero que retorne todos os livros.).
+
+Fiz um pequeno exemplo utilizando o `Insomnia`:
+
+![GETALL](./ScreenShot/insomniaGetAll.PNG)
+
+
 # Rota "POST"
 Utilizar methodo "POST" na seguinte rota: localhost:8000/book, e em seguida utilizar o json.
 
 Fiz um pequeno exemplo utilizando o `Insomnia`:
 
-<img src="./ScreenShot/insomi1.PNG"/>
+![POST](./ScreenShot/insomi1.PNG)
