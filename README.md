@@ -53,4 +53,4 @@ Utilizar methodo "POST" na seguinte rota: localhost:8000/book, e em seguida util
 
 Fiz um pequeno exemplo utilizando o `Insomnia`:
 
-![POST](./ScreenShot/insomi1.PNG)
+![POST](./ScreenShot/postInsomnia.PNG)

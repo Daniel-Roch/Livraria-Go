@@ -25,17 +25,7 @@ type Book struct {
 
 var client *mongo.Client
 
-func CreateBooks(response http.ResponseWriter, request *http.Request) {
-	response.Header().Add("content-type", "application/json")
-	var book Book
-	json.NewDecoder(request.Body).Decode(&book)
-	collection := client.Database("Livraria_Moneri").Collection("Livro")
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	result, _ := collection.InsertOne(ctx, book)
-	json.NewEncoder(response).Encode(result)
-}
-
-//Fazer <-
+//Get All
 func GetBooks(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("content-type", "application/json")
 	var books []Book
@@ -61,14 +51,42 @@ func GetBooks(response http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(response).Encode(books)
 }
 
+//POST
+func CreateBook(response http.ResponseWriter, request *http.Request) {
+	response.Header().Add("content-type", "application/json")
+	var book Book
+	json.NewDecoder(request.Body).Decode(&book)
+	collection := client.Database("Livraria_Moneri").Collection("Livro")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	result, _ := collection.InsertOne(ctx, book)
+	json.NewEncoder(response).Encode(result)
+}
+
+func GetBook(response http.ResponseWriter, request *http.Request) {
+	response.Header().Add("content-type", "application/json")
+	params := mux.Vars(request)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+	var book Book
+	collection := client.Database("Livraria_Moneri").Collection("Livro")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err := collection.FindOne(ctx, Book{ID: id}).Decode(&book)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		response.Write([]byte(`{"mensagem": "` + err.Error() + `"}`))
+		return
+	}
+	json.NewEncoder(response).Encode(book)
+}
+
 func main() {
-	fmt.Printf("Aplicação Rodando..")
+	fmt.Printf("Connect...")
 	//Decidi não pegar o erro no momento.
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27016")
 	client, _ = mongo.Connect(ctx, clientOptions)
 	router := mux.NewRouter()
-	router.HandleFunc("/books", GetBooks).Methods("GET")
-	router.HandleFunc("/book", CreateBooks).Methods("POST")
+	router.HandleFunc("/books", GetBooks).Methods("GET")    //Pegar Todos os livros.
+	router.HandleFunc("/book", CreateBook).Methods("POST")  //Enviar 1 livro.
+	router.HandleFunc("/book/{id}", GetBook).Methods("GET") //Pegar 1 livro pelo ID. (Erro.)
 	http.ListenAndServe(":8000", router)
 }
